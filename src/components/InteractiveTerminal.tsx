@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Terminal as TerminalIcon, Send, ChevronRight, ExternalLink } from 'lucide-react';
+import { Terminal as TerminalIcon, Send, ChevronRight, ExternalLink, Loader2 } from 'lucide-react';
+import { runHermesTask } from '@/lib/hermes-bridge';
 
 interface TerminalProps {
   initialNews: any[];
@@ -10,6 +10,7 @@ export function InteractiveTerminal({ initialNews, nodes }: TerminalProps) {
   const [input, setInput] = useState("");
   const [logs, setLogs] = useState<any[]>([]);
   const [news, setNews] = useState(initialNews);
+  const [isThinking, setIsThinking] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -61,6 +62,27 @@ export function InteractiveTerminal({ initialNews, nodes }: TerminalProps) {
         // In a real app, this would call the server fn again.
         setLogs(prev => [...prev, { type: 'sys', text: 'STREAM_RECONCILED: 12 NEW SIGNALS DETECTED' }]);
         break;
+      case '/hermes':
+        const query = args.join(" ");
+        if (!query) {
+          setLogs(prev => [...prev, { type: 'error', text: 'ERROR: No query provided. Usage: /hermes [task]' }]);
+          break;
+        }
+        setIsThinking(true);
+        setLogs(prev => [...prev, { type: 'sys', text: 'INITIALIZING HERMES AGENT CORE...' }]);
+        try {
+          const res = await runHermesTask({ query });
+          if (res.success) {
+            setLogs(prev => [...prev, { type: 'memo', text: res.output }]);
+          } else {
+            setLogs(prev => [...prev, { type: 'error', text: `HERMES_ERROR: ${res.error || 'Unknown execution failure'}` }]);
+          }
+        } catch (err: any) {
+          setLogs(prev => [...prev, { type: 'error', text: `BRIDGE_ERROR: ${err.message}` }]);
+        } finally {
+          setIsThinking(false);
+        }
+        break;
       default:
         setLogs(prev => [...prev, { type: 'error', text: `COMMAND_NOT_FOUND: ${action}` }]);
     }
@@ -79,8 +101,14 @@ export function InteractiveTerminal({ initialNews, nodes }: TerminalProps) {
           ag_interactive_console_v2.bin
         </div>
         <div className="flex items-center gap-2">
-           <div className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
-           <span className="text-[8px] font-mono font-bold text-green-400">ACTIVE</span>
+           {isThinking ? (
+             <Loader2 className="h-3 w-3 text-cyan animate-spin" />
+           ) : (
+             <div className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
+           )}
+           <span className="text-[8px] font-mono font-bold text-green-400 uppercase">
+             {isThinking ? 'Thinking' : 'Active'}
+           </span>
         </div>
       </div>
 
