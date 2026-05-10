@@ -5,6 +5,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { fetchAINews } from "@/lib/dynamic-news";
 import { getEmpireStatus } from "@/lib/node-monitor";
 import { useState, useEffect } from "react";
+import { InteractiveTerminal } from "@/components/InteractiveTerminal";
 
 const getSystemData = createServerFn().handler(async () => {
   try {
@@ -119,59 +120,9 @@ function Index() {
         </div>
       </section>
 
-      {/* Terminal Section - LIVE NEWS STREAM */}
+      {/* Terminal Section - INTERACTIVE */}
       <section className="mx-auto max-w-6xl px-4 py-32">
-        <div className="relative rounded-2xl border border-white/10 bg-black/80 backdrop-blur-3xl shadow-[0_0_100px_-20px_rgba(0,242,255,0.15)] overflow-hidden">
-          <div className="flex items-center justify-between border-b border-white/5 bg-white/[0.03] px-6 py-4">
-            <div className="flex gap-2">
-              <div className="h-3 w-3 rounded-full bg-white/10" />
-              <div className="h-3 w-3 rounded-full bg-white/10" />
-              <div className="h-3 w-3 rounded-full bg-white/10" />
-            </div>
-            <div className="font-mono text-[10px] font-bold uppercase tracking-widest text-cyan opacity-40">
-              ag_live_intelligence_stream.bin
-            </div>
-            <div className="flex items-center gap-2">
-               <div className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
-               <span className="text-[8px] font-mono font-bold text-green-400">RECEIVING_TRANSMISSION</span>
-            </div>
-          </div>
-          <div className="p-8 font-mono text-xs md:text-sm leading-loose max-h-[500px] overflow-y-auto custom-scrollbar">
-            {news.length > 0 ? news.map((item, i) => (
-              <div key={i} className="group mb-4 last:mb-0 hover:bg-white/[0.02] p-2 -mx-2 transition-colors">
-                <div className="flex items-start gap-4">
-                  <span className="text-muted-foreground opacity-30 select-none shrink-0">
-                    [{mounted ? new Date(item.pubDate).toLocaleTimeString() : '---'}]
-                  </span>
-                  <div className="flex flex-col">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 bg-cyan/10 text-cyan rounded border border-cyan/20 uppercase tracking-tighter">
-                        {item.source}
-                      </span>
-                    </div>
-                    <a 
-                      href={item.link} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-white hover:text-cyan transition-colors font-bold flex items-center gap-2"
-                    >
-                      {item.title}
-                      <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )) : (
-              <div className="text-muted-foreground/50 text-center py-20 italic">
-                Synchronizing with neural mesh... awaiting data injection.
-              </div>
-            )}
-            <div className="mt-8 flex items-center gap-2 text-white/50 animate-pulse">
-              <span className="text-cyan">▋</span>
-              <span className="text-[10px] uppercase font-bold tracking-widest">Awaiting next breakthrough...</span>
-            </div>
-          </div>
-        </div>
+        <InteractiveTerminal initialNews={news} nodes={nodes} />
       </section>
     </main>
   );
