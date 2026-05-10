@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap");
-@import "tailwindcss" source(none);
+@import "tailwindcss";
 @import "tw-animate-css";
-@source "../src";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -37,13 +36,14 @@
   
   --color-cyan: oklch(0.75 0.15 190);
   --color-violet: oklch(0.65 0.25 300);
+  --color-void: oklch(0.12 0.02 260);
 }
 
 :root {
   --radius: 1rem;
 
   /* Antigravity Palette: Deep Space & Neural Glow */
-  --void: oklch(0.12 0.02 260);              /* Deep space black-blue */
+  --void: oklch(0.1 0.02 260);              /* Darker space black */
   --glow-cyan: oklch(0.75 0.18 195);
   --glow-violet: oklch(0.65 0.25 310);
   --starlight: oklch(0.98 0.01 260);
@@ -51,7 +51,7 @@
   --background: var(--void);
   --foreground: var(--starlight);
   
-  --card: oklch(1 0 0 / 5%);
+  --card: oklch(1 0 0 / 3%);
   --card-foreground: var(--starlight);
   
   --popover: var(--void);
@@ -60,10 +60,10 @@
   --primary: var(--glow-cyan);
   --primary-foreground: var(--void);
   
-  --secondary: oklch(1 0 0 / 8%);
+  --secondary: oklch(1 0 0 / 6%);
   --secondary-foreground: var(--starlight);
   
-  --muted: oklch(1 0 0 / 12%);
+  --muted: oklch(1 0 0 / 8%);
   --muted-foreground: oklch(0.7 0.02 260);
   
   --accent: var(--glow-violet);
@@ -72,8 +72,8 @@
   --destructive: oklch(0.55 0.22 27);
   --destructive-foreground: var(--starlight);
   
-  --border: oklch(1 0 0 / 15%);
-  --input: oklch(1 0 0 / 10%);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 8%);
   --ring: var(--glow-cyan);
 }
 
@@ -84,15 +84,22 @@
   html {
     -webkit-font-smoothing: antialiased;
     scroll-behavior: smooth;
+    background: var(--void);
   }
   body {
-    background-color: var(--color-background);
+    background-color: var(--void);
     background-image: 
-      radial-gradient(circle at 0% 0%, oklch(0.65 0.2 310 / 8%) 0%, transparent 40%),
-      radial-gradient(circle at 100% 100%, oklch(0.75 0.15 195 / 8%) 0%, transparent 40%);
+      /* The Grid */
+      linear-gradient(to right, oklch(1 0 0 / 3%) 1px, transparent 1px),
+      linear-gradient(to bottom, oklch(1 0 0 / 3%) 1px, transparent 1px),
+      /* The Aurora Glows */
+      radial-gradient(circle at 10% 20%, oklch(0.75 0.18 195 / 15%) 0%, transparent 50%),
+      radial-gradient(circle at 90% 80%, oklch(0.65 0.25 310 / 15%) 0%, transparent 50%);
+    background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%;
     background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    min-height: 100vh;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-serif);
@@ -103,26 +110,28 @@
 
 @layer utilities {
   .glass {
-    background: oklch(1 0 0 / 5%);
-    backdrop-filter: blur(12px);
-    border: 1px solid oklch(1 0 0 / 15%);
+    background: oklch(1 0 0 / 3%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid oklch(1 0 0 / 10%);
   }
   
-  .glass-hover {
-    transition: all 0.3s ease;
+  .glass-card {
+    background: linear-gradient(135deg, oklch(1 0 0 / 5%), oklch(1 0 0 / 2%));
+    backdrop-filter: blur(24px);
+    border: 1px solid oklch(1 0 0 / 12%);
+    box-shadow: 0 8px 32px 0 oklch(0 0 0 / 37%);
   }
-  .glass-hover:hover {
-    background: oklch(1 0 0 / 10%);
-    border-color: var(--color-primary);
-    box-shadow: 0 0 30px oklch(0.75 0.18 195 / 20%);
+  
+  .neon-glow-cyan {
+    box-shadow: 0 0 20px oklch(0.75 0.18 195 / 30%), inset 0 0 10px oklch(0.75 0.18 195 / 10%);
   }
 
-  .neon-text {
-    text-shadow: 0 0 10px var(--color-primary);
+  .neon-text-cyan {
+    text-shadow: 0 0 15px oklch(0.75 0.18 195 / 60%);
   }
   
-  .neon-border {
-    box-shadow: 0 0 20px oklch(0.75 0.18 195 / 30%);
+  .neon-text-violet {
+    text-shadow: 0 0 15px oklch(0.65 0.25 310 / 60%);
   }
 
   .font-mono { font-family: var(--font-mono); }
@@ -137,4 +146,17 @@
 
 .neural-pulse {
   animation: pulse-cyan 2s infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+.hover-glitch:hover {
+  animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite;
 }
