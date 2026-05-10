@@ -98,7 +98,7 @@ function Index() {
           </div>
           <div className="p-8 font-mono text-sm leading-relaxed">
             <div className="text-muted-foreground mb-1">[02:44:11] INITIALIZING NEURAL SYNAPSE...</div>
-            <div className="text-cyan mb-1">[02:44:12] HANDSHAKE: NODE_TORONTO_01 -> NODE_OTTAWA_CORE</div>
+            <div className="text-cyan mb-1">[02:44:12] HANDSHAKE: NODE_TORONTO_01 -&gt; NODE_OTTAWA_CORE</div>
             <div className="text-cyan mb-1">[02:44:13] AUTHENTICATED: LEVEL_5_SOVEREIGNTY_RECONCILED</div>
             <div className="text-violet-400 mb-1">[02:44:15] DETECTING ARCHITECTURAL ANOMALY... FIXING...</div>
             <div className="text-green-400 mb-1">[02:44:17] SELF-HEAL COMPLETE: NEW CSS_PROTOCOL DEPLOYED</div>
