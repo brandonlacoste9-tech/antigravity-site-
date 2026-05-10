@@ -1,5 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Cpu, Layers, Zap, Infinity, ChevronRight } from "lucide-react";
+import { NeuralMap } from "@/components/NeuralMap";
 
 export const Route = createFileRoute("/engine")({
   component: Engine,
@@ -21,6 +20,10 @@ function Engine() {
           THE <span className="text-cyan neon-text">GRAVITY</span> <br />
           SHIFT
         </h1>
+      </div>
+
+      <div className="mb-20">
+        <NeuralMap />
       </div>
 
       <div className="grid gap-1 lg:grid-cols-2">
