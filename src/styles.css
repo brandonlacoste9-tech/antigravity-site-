@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap");
+@import "tailwindcss" source(none);
+@import "tw-animate-css";
+@source "../src";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  --font-serif: "Outfit", ui-serif, Georgia, serif;
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --color-cyan: oklch(0.75 0.15 190);
+  --color-violet: oklch(0.65 0.25 300);
+}
+
+:root {
+  --radius: 1rem;
+
+  /* Antigravity Palette: Deep Space & Neural Glow */
+  --void: oklch(0.12 0.02 260);              /* Deep space black-blue */
+  --glow-cyan: oklch(0.75 0.18 195);
+  --glow-violet: oklch(0.65 0.25 310);
+  --starlight: oklch(0.98 0.01 260);
+
+  --background: var(--void);
+  --foreground: var(--starlight);
+  
+  --card: oklch(1 0 0 / 5%);
+  --card-foreground: var(--starlight);
+  
+  --popover: var(--void);
+  --popover-foreground: var(--starlight);
+  
+  --primary: var(--glow-cyan);
+  --primary-foreground: var(--void);
+  
+  --secondary: oklch(1 0 0 / 8%);
+  --secondary-foreground: var(--starlight);
+  
+  --muted: oklch(1 0 0 / 12%);
+  --muted-foreground: oklch(0.7 0.02 260);
+  
+  --accent: var(--glow-violet);
+  --accent-foreground: var(--starlight);
+  
+  --destructive: oklch(0.55 0.22 27);
+  --destructive-foreground: var(--starlight);
+  
+  --border: oklch(1 0 0 / 15%);
+  --input: oklch(1 0 0 / 10%);
+  --ring: var(--glow-cyan);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-background);
+    background-image: 
+      radial-gradient(circle at 0% 0%, oklch(0.65 0.2 310 / 8%) 0%, transparent 40%),
+      radial-gradient(circle at 100% 100%, oklch(0.75 0.15 195 / 8%) 0%, transparent 40%);
+    background-attachment: fixed;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.04em;
+    font-weight: 800;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: oklch(1 0 0 / 5%);
+    backdrop-filter: blur(12px);
+    border: 1px solid oklch(1 0 0 / 15%);
+  }
+  
+  .glass-hover {
+    transition: all 0.3s ease;
+  }
+  .glass-hover:hover {
+    background: oklch(1 0 0 / 10%);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 30px oklch(0.75 0.18 195 / 20%);
+  }
+
+  .neon-text {
+    text-shadow: 0 0 10px var(--color-primary);
+  }
+  
+  .neon-border {
+    box-shadow: 0 0 20px oklch(0.75 0.18 195 / 30%);
+  }
+
+  .font-mono { font-family: var(--font-mono); }
+}
+
+/* Neural pulse animation */
+@keyframes pulse-cyan {
+  0% { box-shadow: 0 0 0 0 oklch(0.75 0.18 195 / 40%); }
+  70% { box-shadow: 0 0 0 15px oklch(0.75 0.18 195 / 0%); }
+  100% { box-shadow: 0 0 0 0 oklch(0.75 0.18 195 / 0%); }
+}
+
+.neural-pulse {
+  animation: pulse-cyan 2s infinite;
+}
