@@ -4,13 +4,18 @@ import { Button } from "@/components/ui/button";
 import { createServerFn } from "@tanstack/react-start";
 import { fetchAINews } from "@/lib/dynamic-news";
 import { getEmpireStatus } from "@/lib/node-monitor";
+import { useState, useEffect } from "react";
 
 const getSystemData = createServerFn().handler(async () => {
-  const [news, nodes] = await Promise.all([
-    fetchAINews(),
-    getEmpireStatus()
-  ]);
-  return { news, nodes };
+  try {
+    const [news, nodes] = await Promise.all([
+      fetchAINews(),
+      getEmpireStatus()
+    ]);
+    return { news: news || [], nodes: nodes || [] };
+  } catch (error) {
+    return { news: [], nodes: [] };
+  }
 });
 
 export const Route = createFileRoute("/")({
@@ -22,6 +27,11 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { news, nodes } = Route.useLoaderData();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <main className="relative min-h-screen">
@@ -43,7 +53,7 @@ function Index() {
 
         {/* Real-Time Empire Nodes Dashboard */}
         <div className="mt-32 grid gap-4 lg:grid-cols-2">
-          {nodes.map((node) => (
+          {nodes.length > 0 ? nodes.map((node) => (
             <div key={node.id} className="glass-card p-8 flex items-center justify-between group hover:border-cyan transition-all">
               <div className="flex items-center gap-4">
                 <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${node.status === 'ONLINE' ? 'bg-cyan/10 text-cyan' : 'bg-red-500/10 text-red-500'}`}>
@@ -61,7 +71,11 @@ function Index() {
                 <div className="text-xs font-bold text-muted-foreground">{node.latency}ms</div>
               </div>
             </div>
-          ))}
+          )) : (
+            <div className="lg:col-span-2 glass-card p-8 text-center text-muted-foreground/50 font-mono text-xs italic">
+               Node heartbeat synchronization in progress...
+            </div>
+          )}
         </div>
 
         {/* Tactical Overview */}
@@ -123,10 +137,12 @@ function Index() {
             </div>
           </div>
           <div className="p-8 font-mono text-xs md:text-sm leading-loose max-h-[500px] overflow-y-auto custom-scrollbar">
-            {news.map((item, i) => (
+            {news.length > 0 ? news.map((item, i) => (
               <div key={i} className="group mb-4 last:mb-0 hover:bg-white/[0.02] p-2 -mx-2 transition-colors">
                 <div className="flex items-start gap-4">
-                  <span className="text-muted-foreground opacity-30 select-none shrink-0">[{new Date(item.pubDate).toLocaleTimeString()}]</span>
+                  <span className="text-muted-foreground opacity-30 select-none shrink-0">
+                    [{mounted ? new Date(item.pubDate).toLocaleTimeString() : '---'}]
+                  </span>
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-[10px] font-bold px-1.5 py-0.5 bg-cyan/10 text-cyan rounded border border-cyan/20 uppercase tracking-tighter">
@@ -145,26 +161,17 @@ function Index() {
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="text-muted-foreground/50 text-center py-20 italic">
+                Synchronizing with neural mesh... awaiting data injection.
+              </div>
+            )}
             <div className="mt-8 flex items-center gap-2 text-white/50 animate-pulse">
               <span className="text-cyan">▋</span>
               <span className="text-[10px] uppercase font-bold tracking-widest">Awaiting next breakthrough...</span>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Philosophy Section */}
-      <section className="relative mx-auto max-w-4xl px-4 py-32 text-center overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-violet-600/5 blur-[100px]" />
-        <h2 className="font-serif text-4xl font-black tracking-tight sm:text-6xl">
-          The end of <span className="text-cyan italic neon-text-cyan uppercase">Artificial</span> intelligence. <br />
-          The beginning of <span className="text-violet-400 neon-text-violet uppercase">Actual</span> intelligence.
-        </h2>
-        <p className="mt-10 text-lg text-muted-foreground font-medium leading-relaxed">
-          We are building the first protocol that doesn't just answer questions, but solves for reality. 
-          Antigravity is the infrastructure that allows code to dream, build, and defend itself.
-        </p>
       </section>
     </main>
   );
