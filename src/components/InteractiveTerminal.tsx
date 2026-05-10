@@ -83,6 +83,17 @@ export function InteractiveTerminal({ initialNews, nodes }: TerminalProps) {
           setIsThinking(false);
         }
         break;
+      case '/nexus':
+        setLogs(prev => [...prev, { type: 'sys', text: 'INITIALIZING GLOBAL NEXUS SUMMARY...' }]);
+        setLogs(prev => [...prev, { type: 'memo', text: `
+--- EMPIRE STATUS REPORT ---
+NODES ONLINE: ${nodes.length}
+SHADOW_CORE: INITIALIZING [DEEPSEEK_V4_PRO]
+ACTIVE WORKSTREAMS: 1 (SHADOW_NODE_CONST)
+SYSTEM_INTEGRITY: 100%
+--- END REPORT ---
+        ` }]);
+        break;
       default:
         setLogs(prev => [...prev, { type: 'error', text: `COMMAND_NOT_FOUND: ${action}` }]);
     }

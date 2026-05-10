@@ -102,12 +102,44 @@ function Index() {
                    <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-violet-400" />
                 </div>
               </div>
+              
+              {/* LIVE SIGNAL OVERLAY */}
+              <div className="absolute bottom-4 left-6 right-6 p-4 rounded-xl bg-black/80 border border-white/5 backdrop-blur-md">
+                 <div className="flex items-center justify-between mb-2">
+                    <span className="text-[8px] font-mono text-cyan/40 uppercase tracking-widest">Live_Signal_Ingest</span>
+                    <span className="text-[8px] font-mono text-cyan/60">STREAMING_FROM_SHADOW_CORE</span>
+                 </div>
+                 <div className="font-mono text-[9px] text-cyan/80 truncate">
+                   {">"} [UNISWAP_V3] ANOMALOUS_LIQUIDITY_MIGRATION: POOL_ADDR(0x1f9...342) // MAGNITUDE: 14.8x // ZK_ATTESTATION_PENDING...
+                 </div>
+              </div>
             </div>
           </div>
 
           {/* RIGHT: AGENTIC WORKSTREAM & SYSTEM VITALS */}
           <div className="lg:col-span-4 flex flex-col gap-6">
             
+            {/* BONDING REGISTRY */}
+            <div className="rounded-2xl border border-cyan/30 bg-cyan/5 p-6 backdrop-blur-3xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                 <Shield className="h-12 w-12 text-cyan" />
+              </div>
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="font-mono text-[10px] font-bold uppercase tracking-widest text-cyan/60">Bonding_Registry</h3>
+                <span className="px-2 py-0.5 rounded bg-cyan/20 border border-cyan/30 text-[8px] font-mono text-cyan">VALIDATED</span>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between items-end">
+                   <span className="text-3xl font-black italic tracking-tighter text-white">32.00</span>
+                   <span className="text-[10px] font-mono text-cyan mb-1 font-bold">SHADOW_BONDED</span>
+                </div>
+                <div className="h-1.5 w-full bg-cyan/10 rounded-full overflow-hidden">
+                   <div className="h-full bg-cyan w-full shadow-[0_0_15px_#00f2ff]" />
+                </div>
+                <p className="text-[9px] font-mono text-white/30 leading-relaxed">MRENCLAVE verified. Node is stake-weighted and eligible for epoch rewards.</p>
+              </div>
+            </div>
+
             {/* ENGINE METRICS */}
             <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur-3xl">
               <div className="flex items-center justify-between mb-8">
