@@ -47,9 +47,9 @@ function Index() {
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <div className="h-6 w-1 bg-cyan neon-glow-cyan" />
-              <h1 className="font-serif text-4xl font-black tracking-tighter uppercase italic">Antigravity Nexus</h1>
+              <h1 className="font-serif text-4xl font-black tracking-tighter uppercase italic">Commander Leroux</h1>
             </div>
-            <p className="font-mono text-[10px] text-white/30 tracking-[0.2em] uppercase">Sovereign Intelligence Command Center // Local Node: North_America_01</p>
+            <p className="font-mono text-[10px] text-white/30 tracking-[0.2em] uppercase">Sovereign Intelligence Command Center // ID: brandonlacoste9@gmail.com</p>
           </div>
           
           <div className="flex gap-4">
