@@ -2,6 +2,7 @@ import { createRootRoute, Outlet, ScrollRestoration } from "@tanstack/react-rout
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { HeadContent } from "@tanstack/react-router";
+import "@/styles.css";
 
 export const Route = createRootRoute({
   component: RootComponent,
