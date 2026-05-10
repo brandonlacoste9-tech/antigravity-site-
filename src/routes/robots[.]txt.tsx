@@ -5,7 +5,7 @@ export const Route = createFileRoute("/robots.txt")({
     handlers: {
       GET: async ({ request }) => {
         const origin = new URL(request.url).origin;
-        const body = `# Canada Daily — robots.txt
+        const body = `# Antigravity Protocol — robots.txt
 User-agent: *
 Allow: /
 Disallow: /api/
