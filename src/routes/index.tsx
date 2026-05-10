@@ -1,23 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Zap, Terminal, Cpu, Shield, ArrowRight, Activity, Database, Radio, Globe, Layers, ExternalLink } from "lucide-react";
+import { Zap, Terminal, Cpu, Shield, ArrowRight, Activity, Database, Radio, Globe, Layers, ExternalLink, Server } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createServerFn } from "@tanstack/react-start";
 import { fetchAINews } from "@/lib/dynamic-news";
+import { getEmpireStatus } from "@/lib/node-monitor";
 
-const getLiveNews = createServerFn().handler(async () => {
-  return await fetchAINews();
+const getSystemData = createServerFn().handler(async () => {
+  const [news, nodes] = await Promise.all([
+    fetchAINews(),
+    getEmpireStatus()
+  ]);
+  return { news, nodes };
 });
 
 export const Route = createFileRoute("/")({
   loader: async () => {
-    const news = await getLiveNews();
-    return { news };
+    return await getSystemData();
   },
   component: Index,
 });
 
 function Index() {
-  const { news } = Route.useLoaderData();
+  const { news, nodes } = Route.useLoaderData();
 
   return (
     <main className="relative min-h-screen">
@@ -27,7 +31,7 @@ function Index() {
           <div className="inline-flex items-center gap-2 rounded-full border border-cyan/30 bg-cyan/10 px-4 py-1.5 mb-10 backdrop-blur-xl neon-glow-cyan">
             <div className="h-2 w-2 rounded-full bg-cyan animate-pulse" />
             <span className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-cyan">
-              Transmission Live: Feed Reconciled
+              Sovereign Network: Synchronized
             </span>
           </div>
           
@@ -35,24 +39,33 @@ function Index() {
             THE <span className="text-cyan neon-text-cyan hover-glitch cursor-default uppercase">Defiant</span> <br />
             <span className="text-white">INTELLIGENCE</span>
           </h1>
-          
-          <p className="mt-10 max-w-2xl text-lg font-medium leading-relaxed text-muted-foreground/90 md:text-2xl">
-            The simulation is over. Antigravity is now a live neural aggregator, 
-            scanning the global mesh for the breakthroughs that will define the next century.
-          </p>
+        </div>
 
-          <div className="mt-14 flex flex-wrap justify-center gap-6">
-            <Button size="lg" className="h-16 px-12 text-lg font-black uppercase tracking-widest bg-cyan text-void hover:bg-white transition-all shadow-[0_0_50px_rgba(0,242,255,0.4)] border-none">
-              Initialize Core
-            </Button>
-            <Button size="lg" variant="outline" className="h-16 px-12 text-lg font-black uppercase tracking-widest border-2 border-white/10 glass-card hover:border-cyan transition-all">
-              Full Archive
-            </Button>
-          </div>
+        {/* Real-Time Empire Nodes Dashboard */}
+        <div className="mt-32 grid gap-4 lg:grid-cols-2">
+          {nodes.map((node) => (
+            <div key={node.id} className="glass-card p-8 flex items-center justify-between group hover:border-cyan transition-all">
+              <div className="flex items-center gap-4">
+                <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${node.status === 'ONLINE' ? 'bg-cyan/10 text-cyan' : 'bg-red-500/10 text-red-500'}`}>
+                  <Server className="h-6 w-6" />
+                </div>
+                <div>
+                  <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground">{node.id}</div>
+                  <div className="text-xl font-black text-white">{node.name}</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className={`text-[10px] font-mono font-bold ${node.status === 'ONLINE' ? 'text-green-400' : 'text-red-500'}`}>
+                   {node.status}
+                </div>
+                <div className="text-xs font-bold text-muted-foreground">{node.latency}ms</div>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Tactical Overview */}
-        <div className="mt-40 grid gap-4 px-4 lg:grid-cols-3">
+        <div className="mt-12 grid gap-4 px-4 lg:grid-cols-3">
           {[
             { 
               title: "Autonomous Aggregation", 
@@ -62,15 +75,15 @@ function Index() {
               color: "text-cyan"
             },
             { 
-              title: "Neural Ranking", 
-              desc: "Intelligence-based sorting that prioritizes sovereign breakthroughs over noise.",
-              icon: Shield,
-              tag: "LOGIC_GATE",
+              title: "Empire Monitoring", 
+              desc: "Live heartbeats from Le Nordique and Canada Daily nodes.",
+              icon: Activity,
+              tag: "NODE_WATCH",
               color: "text-violet-400"
             },
             { 
               title: "Shadow Distribution", 
-              desc: "Bypassing mainstream curation to deliver the raw signals of the singularity.",
+              desc: "Bypassing mainstream curation to deliver the raw signals.",
               icon: Globe,
               tag: "SIGNAL_MESH",
               color: "text-cyan"
